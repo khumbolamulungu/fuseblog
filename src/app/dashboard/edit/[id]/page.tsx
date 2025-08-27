@@ -1,16 +1,21 @@
+
 import UpdatePost from "@/app/components/UpdatePost";
-// import { prisma } from "@/utils/db";
 import { prisma } from "@/app/utils/db";
 import { notFound } from "next/navigation";
 
-export default async function EditPostPage({ params }: { params: { id: string } }) {
+interface EditPostPageProps {
+  params: { id: string }; // 👈 keep it simple
+}
+
+export default async function EditPostPage({ params }: EditPostPageProps) {
   const post = await prisma.blogPost.findUnique({
-    where: { id: Number(params.id) }, // 👈 convert string to number
+    where: { id: Number(params.id) }, // or keep `params.id` if your ID is String/UUID
   });
 
   if (!post) return notFound();
 
   return <UpdatePost post={post} />;
 }
+
 
 
